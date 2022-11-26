@@ -10,8 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_core: 
+#  auth    
   firebase_auth:   
   google_sign_in:   
+#  db 
+  firebase_database:  
 
 dev_dependencies:
   flutter_test:

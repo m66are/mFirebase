@@ -1,4 +1,4 @@
-import 'package:fireauth/utilities/auth_response.dart';
+import 'package:fireauth/utilities/server_response.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -22,7 +22,7 @@ class AuthService {
 
   // methods //
 
-  Future<AuthResponse> signInwithGoogle() async {
+  Future<ServerResponse> signInwithGoogle() async {
     try {
       final GoogleSignInAccount? googleSignInAccount =
           await _googleSignIn.signIn();
@@ -34,49 +34,52 @@ class AuthService {
       );
       await _auth.signInWithCredential(credential);
 
-      return AuthResponse(ResponseStatus.Success, data: _auth.currentUser?.uid);
+      return ServerResponse(ResponseStatus.Success,
+          data: _auth.currentUser?.uid);
     } on FirebaseAuthException catch (e) {
       print(e.message);
-      return AuthResponse(ResponseStatus.Error, errorMessage: e.message);
+      return ServerResponse(ResponseStatus.Error, errorMessage: e.message);
     } catch (e) {
       print("Error ========>$e");
-      return AuthResponse(ResponseStatus.Error, errorMessage: e.toString());
+      return ServerResponse(ResponseStatus.Error, errorMessage: e.toString());
     }
   }
 
-  Future<AuthResponse> signInWithEmailAndPassword(
+  Future<ServerResponse> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
       UserCredential response = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       if (response.user != null) {
-        return AuthResponse<User>(ResponseStatus.Success, data: response.user);
+        return ServerResponse<User>(ResponseStatus.Success,
+            data: response.user);
       } else {
-        return AuthResponse<User>(ResponseStatus.Error,
+        return ServerResponse<User>(ResponseStatus.Error,
             errorMessage: "User is null please try again");
       }
     } on FirebaseAuthException catch (e) {
-      return AuthResponse(ResponseStatus.Error, errorMessage: e.message);
+      return ServerResponse(ResponseStatus.Error, errorMessage: e.message);
     } catch (e) {
-      return AuthResponse(ResponseStatus.Error, errorMessage: e.toString());
+      return ServerResponse(ResponseStatus.Error, errorMessage: e.toString());
     }
   }
 
-  Future<AuthResponse> signUpWithEmailAndPassword(
+  Future<ServerResponse> signUpWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
       UserCredential response = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       if (response.user != null) {
-        return AuthResponse<User>(ResponseStatus.Success, data: response.user);
+        return ServerResponse<User>(ResponseStatus.Success,
+            data: response.user);
       } else {
-        return AuthResponse<User>(ResponseStatus.Error,
+        return ServerResponse<User>(ResponseStatus.Error,
             errorMessage: "User is null please try again");
       }
     } on FirebaseAuthException catch (e) {
-      return AuthResponse(ResponseStatus.Error, errorMessage: e.message);
+      return ServerResponse(ResponseStatus.Error, errorMessage: e.message);
     } catch (e) {
-      return AuthResponse(ResponseStatus.Error, errorMessage: e.toString());
+      return ServerResponse(ResponseStatus.Error, errorMessage: e.toString());
     }
   }
 

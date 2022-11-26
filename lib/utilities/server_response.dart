@@ -13,13 +13,13 @@ extension ParseStringToResponseStatus on String {
   }
 }
 
-class AuthResponse<T> {
+class ServerResponse<T> {
   ResponseStatus status;
   String? errorMessage;
   String? errorCode;
   T? data;
 
-  AuthResponse(
+  ServerResponse(
     this.status, {
     this.errorMessage,
     this.errorCode,
@@ -28,12 +28,12 @@ class AuthResponse<T> {
 
   bool get success => status == ResponseStatus.Success;
 
-  factory AuthResponse.fromJson(dynamic json) {
+  factory ServerResponse.fromJson(dynamic json) {
     final ResponseStatus status = json["status"].toString().toResponseStatus();
     final String? errorMessage = json["errorMessage"];
     final String? errorCode = json["errorCode"];
     final dynamic data = json;
-    return AuthResponse(
+    return ServerResponse(
       status,
       errorMessage: errorMessage,
       errorCode: errorCode,
