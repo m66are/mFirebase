@@ -44,6 +44,42 @@ class AuthService {
     }
   }
 
+  Future<AuthResponse> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
+    try {
+      UserCredential response = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      if (response.user != null) {
+        return AuthResponse<User>(ResponseStatus.Success, data: response.user);
+      } else {
+        return AuthResponse<User>(ResponseStatus.Error,
+            errorMessage: "User is null please try again");
+      }
+    } on FirebaseAuthException catch (e) {
+      return AuthResponse(ResponseStatus.Error, errorMessage: e.message);
+    } catch (e) {
+      return AuthResponse(ResponseStatus.Error, errorMessage: e.toString());
+    }
+  }
+
+  Future<AuthResponse> signUpWithEmailAndPassword(
+      {required String email, required String password}) async {
+    try {
+      UserCredential response = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      if (response.user != null) {
+        return AuthResponse<User>(ResponseStatus.Success, data: response.user);
+      } else {
+        return AuthResponse<User>(ResponseStatus.Error,
+            errorMessage: "User is null please try again");
+      }
+    } on FirebaseAuthException catch (e) {
+      return AuthResponse(ResponseStatus.Error, errorMessage: e.message);
+    } catch (e) {
+      return AuthResponse(ResponseStatus.Error, errorMessage: e.toString());
+    }
+  }
+
   Future signOut() async {
     await _auth.signOut();
   }

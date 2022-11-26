@@ -13,11 +13,11 @@ extension ParseStringToResponseStatus on String {
   }
 }
 
-class AuthResponse {
+class AuthResponse<T> {
   ResponseStatus status;
   String? errorMessage;
   String? errorCode;
-  dynamic data;
+  T? data;
 
   AuthResponse(
     this.status, {
