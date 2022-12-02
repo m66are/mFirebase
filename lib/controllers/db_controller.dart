@@ -30,4 +30,25 @@ class DatabaseService {
       return ServerResponse(ResponseStatus.Error, errorMessage: e.toString());
     }
   }
+
+  Future<ServerResponse> getDataAsStream({required String nodePath}) async {
+    print("🚀 Getting data from $nodePath ...");
+    try {
+      var data = _db.ref(nodePath).get().asStream();
+      if (data != null) {
+        return ServerResponse<dynamic>(ResponseStatus.Success, data: data);
+      } else {
+        return ServerResponse(ResponseStatus.Error,
+            errorMessage: "Unknown Error");
+      }
+    } on FirebaseException catch (e, stk) {
+      print("🚨 Firebase exception $e");
+      print("🚨 Firebase exception stacktrace $stk");
+      return ServerResponse(ResponseStatus.Error, errorMessage: e.message);
+    } catch (e, stk) {
+      print("🚨 Exception $e");
+      print("🚨 Exception stacktrace $stk");
+      return ServerResponse(ResponseStatus.Error, errorMessage: e.toString());
+    }
+  }
 }
