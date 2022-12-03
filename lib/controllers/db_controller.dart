@@ -31,7 +31,7 @@ class DatabaseService {
     }
   }
 
-  Stream? getDataAsStream({required String nodePath}) {
+  Stream<DatabaseEvent> getDataAsStream({required String nodePath}) {
     DatabaseReference streamData = FirebaseDatabase.instance.ref(nodePath);
     return streamData.onValue;
   }
