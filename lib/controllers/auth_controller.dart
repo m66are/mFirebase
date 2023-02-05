@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mFirebase/utilities/server_response.dart';
@@ -13,6 +15,9 @@ class AuthService {
   User? get firebaseUser => _auth.currentUser;
 
   // init //
+  AuthService() {
+    unawaited(_auth.setSettings(appVerificationDisabledForTesting: true));
+  }
 
   Future<void> init() async {
     print("##--AuthService---Init-------##");
