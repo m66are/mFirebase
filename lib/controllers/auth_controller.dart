@@ -16,8 +16,6 @@ class AuthService {
 
   Future<void> init() async {
     print("##--AuthService---Init-------##");
-
-    // await _updateUserInfo();
   }
 
   // methods //
@@ -48,7 +46,7 @@ class AuthService {
   Future<ServerResponse> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      UserCredential response = await _auth.signInWithEmailAndPassword(
+      final UserCredential response = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       if (response.user != null) {
         return ServerResponse<User>(ResponseStatus.Success,
@@ -67,8 +65,8 @@ class AuthService {
   Future<ServerResponse> signUpWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      UserCredential response = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      final UserCredential response = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
       if (response.user != null) {
         return ServerResponse<User>(ResponseStatus.Success,
             data: response.user);
@@ -80,6 +78,46 @@ class AuthService {
       return ServerResponse(ResponseStatus.Error, errorMessage: e.message);
     } catch (e) {
       return ServerResponse(ResponseStatus.Error, errorMessage: e.toString());
+    }
+  }
+
+  Future<ServerResponse> sendOtp(String phoneNumber) async {
+    String? _verifcationId;
+    dynamic _error;
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
+        verificationFailed: (FirebaseAuthException error) {},
+        codeSent: (String verificationId, int? forceResendingToken) {
+          _verifcationId = verificationId;
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+    } catch (e) {
+      _error = e;
+    }
+    if (_verifcationId != null) {
+      return ServerResponse(ResponseStatus.Success, data: _verifcationId);
+    } else {
+      return ServerResponse(ResponseStatus.Error, errorMessage: _error);
+    }
+  }
+
+  Future<ServerResponse> verifyOtp(String verificationId, String otp) async {
+    UserCredential? _user;
+    dynamic _error;
+    try {
+      final PhoneAuthCredential _credential = PhoneAuthProvider.credential(
+          verificationId: verificationId, smsCode: otp);
+      _user = await _auth.signInWithCredential(_credential);
+    } catch (e) {
+      _error = e;
+    }
+    if (_user != null) {
+      return ServerResponse(ResponseStatus.Success, data: _user.user);
+    } else {
+      return ServerResponse(ResponseStatus.Error, errorMessage: _error);
     }
   }
 
