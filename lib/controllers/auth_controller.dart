@@ -90,6 +90,7 @@ class AuthService {
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
         verificationFailed: (FirebaseAuthException error) {
+          print(error);
           throw error;
         },
         codeSent: (String verificationId, int? forceResendingToken) {
