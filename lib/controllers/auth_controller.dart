@@ -96,6 +96,7 @@ class AuthService {
       );
     } catch (e) {
       _error = e;
+      throw Exception(e);
     }
     if (_verifcationId != null) {
       return ServerResponse(ResponseStatus.Success, data: _verifcationId);
@@ -113,6 +114,7 @@ class AuthService {
       _user = await _auth.signInWithCredential(_credential);
     } catch (e) {
       _error = e;
+      throw Exception(e);
     }
     if (_user != null) {
       return ServerResponse(ResponseStatus.Success, data: _user.user);
