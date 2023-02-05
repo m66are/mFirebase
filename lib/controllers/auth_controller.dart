@@ -15,9 +15,6 @@ class AuthService {
   User? get firebaseUser => _auth.currentUser;
 
   // init //
-  AuthService() {
-    unawaited(_auth.setSettings(appVerificationDisabledForTesting: true));
-  }
 
   Future<void> init() async {
     print("##--AuthService---Init-------##");
@@ -134,6 +131,10 @@ class AuthService {
     } else {
       return ServerResponse(ResponseStatus.Error, errorMessage: _error);
     }
+  }
+
+  void initTestMode() {
+    _auth.setSettings(appVerificationDisabledForTesting: true);
   }
 
   Future signOut() async {
