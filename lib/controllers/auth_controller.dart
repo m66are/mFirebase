@@ -89,7 +89,9 @@ class AuthService {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
-        verificationFailed: (FirebaseAuthException error) {},
+        verificationFailed: (FirebaseAuthException error) {
+          throw error;
+        },
         codeSent: (String verificationId, int? forceResendingToken) {
           _verifcationId = verificationId;
         },
