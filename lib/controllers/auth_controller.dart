@@ -85,6 +85,7 @@ class AuthService {
     String? _verifcationId;
     dynamic _error;
     try {
+      print("Calling verify phone number =>$phoneNumber .....");
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
@@ -94,7 +95,9 @@ class AuthService {
         },
         codeAutoRetrievalTimeout: (String verificationId) {},
       );
-    } catch (e) {
+    } catch (e, stk) {
+      print(e);
+      print(stk);
       _error = e;
       throw Exception(e);
     }
@@ -112,7 +115,9 @@ class AuthService {
       final PhoneAuthCredential _credential = PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: otp);
       _user = await _auth.signInWithCredential(_credential);
-    } catch (e) {
+    } catch (e, stk) {
+      print(e);
+      print(stk);
       _error = e;
       throw Exception(e);
     }
