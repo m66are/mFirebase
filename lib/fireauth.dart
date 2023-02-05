@@ -1,1 +1,1 @@
-library fireauth;
+library mFirebase;

@@ -1,4 +1,4 @@
-import 'package:fireauth/utilities/server_response.dart';
+import 'package:mFirebase/utilities/server_response.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 

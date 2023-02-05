@@ -1,6 +1,6 @@
-import 'package:fireauth/utilities/server_response.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mFirebase/utilities/server_response.dart';
 
 class AuthService {
   // instances //
