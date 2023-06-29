@@ -17,7 +17,7 @@ class DatabaseService {
         "🚀 Getting data from $nodePath with limit $limit and offset $offset ...");
     try {
       final DatabaseEvent data =
-          await _db.ref(nodePath).limitToFirst(limit).startAt(offset).once();
+          await _db.ref(nodePath).limitToFirst(limit).once();
       if (data.snapshot.value != null) {
         return ServerResponse<dynamic>(
           ResponseStatus.Success,
